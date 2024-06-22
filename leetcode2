@@ -1,0 +1,307 @@
+ def threeSumClosest(self, nums: List[int], target: int) -> int:
+#recursive way
+        nums.sort()
+        closum=float('inf')
+        for i in range(len(nums)):
+            l=i+1
+            r=len(nums)-1
+            while l<r:
+                current_sum = nums[i] + nums[l] + nums[r]
+                if abs(current_sum - target) < abs(closum - target):
+                    closum = current_sum
+                if current_sum < target:
+                    l += 1
+                elif current_sum > target:
+                    r -= 1
+                else:
+                    return target
+        
+        return closum
+#iterative way
+
+        nums.sort()
+        clsum=float('inf')
+        def help(index,l,r):
+            if index>len(nums):
+                return
+            while l<r:
+                cur=nums[l]+nums[r]+nums[index]
+                if abs(cur- target) < abs(clsum - target):
+                    clsum = cur
+                if cur < target:
+                    helper(index, l + 1, r)
+                elif cur > target:
+                    helper(index, l, r - 1)
+                else:
+                    return
+                break
+        
+        for i in range(len(nums)):
+            helper(i, i + 1, len(nums) - 1)
+        
+        return clsum
+
+
+
+def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        if not intervals:
+            return []
+        intervals.sort(key=lambda x: x[0])
+         def merge_intervals(intervals):
+            if len(intervals) <= 1:
+                return intervals
+            mid = len(intervals) // 2
+            left = merge_intervals(intervals[:mid])
+            right = merge_intervals(intervals[mid:])
+            merged = []
+            i = j = 0
+            while i < len(left) and j < len(right):
+                if left[i][0] <= right[j][0]:
+                    interval = left[i]
+                    i += 1
+                else:
+                    interval = right[j]
+                    j += 1
+                if not merged or merged[-1][1] < interval[0]:
+                    merged.append(interval)
+                else:
+                    merged[-1][1] = max(merged[-1][1], interval[1])
+            while i < len(left):
+                interval = left[i]
+                if not merged or merged[-1][1] < interval[0]:
+                    merged.append(interval)
+                else:
+                    merged[-1][1] = max(merged[-1][1], interval[1])
+                i += 1
+            while j < len(right):
+                interval = right[j]
+                if not merged or merged[-1][1] < interval[0]:
+                    merged.append(interval)
+                else:
+                    merged[-1][1] = max(merged[-1][1], interval[1])
+                j += 1
+            return merged
+        return merge_intervals(intervals)
+
+
+def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        p1, p2, p = m - 1, n - 1, m + n - 1
+        
+       
+        while p1 >= 0 and p2 >= 0:
+            if nums1[p1] > nums2[p2]:
+                nums1[p] = nums1[p1]
+                p1 -= 1
+            else:
+                nums1[p] = nums2[p2]
+                p2 -= 1
+            p -= 1
+        while p2 >= 0:
+            nums1[p] = nums2[p2]
+            p2 -= 1
+            p -= 1
+
+
+
+def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        set1 = set(nums1)
+        set2 = set(nums2)
+        intersection = set1 & set2  
+        return list(intersection)
+
+
+
+
+def findMinArrowShots(self, points: List[List[int]]) -> int:
+        if not points:
+            return 0
+        points.sort(key=lambda x: x[1])
+        a = 1
+        end = points[0][1]
+        
+        for i in range(1, len(points)):
+            if points[i][0] > end:
+                a += 1
+                end = points[i][1]  
+        
+        return a
+
+
+def minMoves2(self, nums: List[int]) -> int:
+        nums.sort()
+        median = nums[len(nums) // 2]  
+        return sum(abs(num - median) for num in nums)
+
+
+
+ def findMinDifference(self, timePoints: List[str]) -> int:
+        minutes = sorted(int(tp[:2]) * 60 + int(tp[3:]) for tp in timePoints)
+        min_diff = float('inf')
+        for i in range(1, len(minutes)):
+            min_diff = min(min_diff, minutes[i] - minutes[i - 1])
+        min_diff = min(min_diff, (24 * 60 - minutes[-1] + minutes[0]))
+        return min_diff
+
+
+def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()
+        p1 = nums[-1] * nums[-2] * nums[-3]
+        p2 = nums[0] * nums[1] * nums[-1]
+        return max(p1, p2)
+
+
+ def dominantIndex(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return -1
+        max_num = max(nums)
+        max_index = nums.index(max_num)
+        for i, num in enumerate(nums):
+            if i != max_index and max_num < 2 * num:
+                return -1
+        
+        return max_index
+
+
+def customSortString(self, order: str, s: str) -> str:
+        order_index = {char: idx for idx, char in enumerate(order)}
+        sorted_s = sorted(s, key=lambda char: order_index.get(char, len(order)))
+
+        return ''.join(sorted_s)
+
+
+
+def findReplaceString(self, s: str, indices: List[int], sources: List[str], targets: List[str]) -> str:
+        replacements = sorted(zip(indices, sources, targets), reverse=True)
+        s_list = list(s)
+        for index, source, target in replacements:
+            if s[index:index + len(source)] == source:
+                s_list[index:index + len(source)] = list(target)
+        return ''.join(s_list)
+
+
+
+def sortArrayByParityII(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        even = 0
+        odd = 1
+        while even < n and odd < n:
+            if nums[even] % 2 == 0:
+                even += 2
+            elif nums[odd] % 2 == 1:
+                odd += 2
+            else:
+                nums[even], nums[odd] = nums[odd], nums[even]
+                even += 2
+                odd += 2
+        
+        return nums
+
+
+def sortedSquares(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        result = [0] * n
+        l, r = 0, n - 1
+        index = n - 1
+        while l <= r:
+            left_square = nums[l] ** 2
+            right_square = nums[r] ** 2
+            if left_square > right_square:
+                result[index] = left_square
+                l += 1
+            else:
+                result[index] = right_square
+                r -= 1
+            index -= 1
+        return result
+
+
+def heightChecker(self, heights: List[int]) -> int:
+        expected = sorted(heights)
+        count = 0
+        for i in range(len(heights)):
+            if heights[i] != expected[i]:
+                count += 1
+        
+        return count
+
+
+
+def removeCoveredIntervals(self, intervals: List[List[int]]) -> int:
+        intervals.sort(key=lambda x: (x[0], -x[1])) 
+        count = 0
+        max_end = float('-inf')
+        for interval in intervals:
+            if interval[1] > max_end:
+                max_end = interval[1]
+                count += 1
+        
+        return count
+
+
+def minimumAbsDifference(self, arr: List[int]) -> List[List[int]]:
+        arr.sort()  
+        min_diff = float('inf')
+        result = []
+        for i in range(1, len(arr)):
+            diff = arr[i] - arr[i - 1]
+            if diff < min_diff:
+                min_diff = diff
+        for i in range(1, len(arr)):
+            if arr[i] - arr[i - 1] == min_diff:
+                result.append([arr[i - 1], arr[i]])
+        
+        return result
+
+
+
+def canMakeArithmeticProgression(self, arr: List[int]) -> bool:
+        arr.sort()  
+        diff = arr[1] - arr[0]
+        for i in range(2, len(arr)):
+            if arr[i] - arr[i - 1] != diff:
+                return False
+        
+        return True
+
+
+def average(self, salary: List[int]) -> float:
+        min_salary = float('inf')
+        max_salary = float('-inf')
+        total_sum = 0
+        for s in salary:
+            if s < min_salary:
+                min_salary = s
+            if s > max_salary:
+                max_salary = s
+            total_sum += s
+        total_sum -= min_salary + max_salary
+        average_salary = total_sum / (len(salary) - 2)
+        
+        return average_salary
+
+
+def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
+        def transform_number(num):
+            transformed = []
+            for digit in str(num):
+                transformed.append(mapping[int(digit)])
+            return int(''.join(map(str, transformed)))
+        sorted_nums = sorted(nums, key=transform_number)
+        
+        return sorted_nums
+
+
+def minMovesToSeat(self, seats: List[int], students: List[int]) -> int:
+        seats.sort()
+        students.sort()
+        
+        total_moves = 0
+        n = len(seats)
+        
+        for i in range(n):
+            total_moves += abs(seats[i] - students[i])
+        
+        return total_moves
